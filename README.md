@@ -41,14 +41,15 @@ Before you begin, ensure you have met the following requirements:
 5. Compile assets:
     ```npm run dev```
 
-6. Running the Application, Start the Laravel development server:
+## Running the Application, 
+Start the Laravel development server:
    ```php artisan serve```
 
 You will see a message indicating that the server is running, along with a URL (e.g., http://localhost:8000). Open this URL in your web browser to access the Tone-deaf-music application.
 
-Contributing
+## Contributing
 If you would like to contribute to this project, please open an issue or create a pull request on the GitHub repository.
 
-License
+## License
 This project is open-source and available under the MIT License.
    
