@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use HasRoles;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'manager_id',
     ];
 
     /**
@@ -42,4 +48,29 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array<int, string>
+     */
+    protected $dates = [
+        'deleted_at',
+    ];
+
+    /**
+     * Get the venues for the user.
+     */
+    public function venues(): HasMany
+    {
+        return $this->hasMany(Venue::class, 'owner_id', 'id');
+    }
+
+    /**
+     * Get the staff for the user.
+     */
+    public function staffs(): HasMany
+    {
+        return $this->hasMany(User::class, 'manager_id', 'id');
+    }
 }

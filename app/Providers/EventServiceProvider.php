@@ -2,10 +2,16 @@
 
 namespace App\Providers;
 
+use App\Events\VenueCreated;
+use App\Events\VenueDeleted;
+use App\Events\VenueUpdated;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\VenueCreatedNotification;
+use App\Listeners\VenueDeletedNotification;
+use App\Listeners\VenueUpdatedNotification;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +23,15 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        VenueCreated::class => [
+            VenueCreatedNotification::class,
+        ],
+        VenueUpdated::class => [
+            VenueUpdatedNotification::class,
+        ],
+        VenueDeleted::class => [
+            VenueDeletedNotification::class,
         ],
     ];
 
